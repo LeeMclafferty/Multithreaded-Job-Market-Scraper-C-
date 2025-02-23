@@ -1,20 +1,36 @@
-// JobMarketScraper.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <curl/curl.h>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
+	output->append((char*)contents, size * nmemb);
+	return size * nmemb;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+int main() {
+	CURL* curl;
+	CURLcode res;
+	std::string response;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+	curl_global_init(CURL_GLOBAL_DEFAULT);
+	curl = curl_easy_init();
+
+	if (curl) {
+		curl_easy_setopt(curl, CURLOPT_URL, "https://www.indeed.com");
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+
+		res = curl_easy_perform(curl);
+
+		if (res != CURLE_OK) {
+			std::cerr << "cURL Error: " << curl_easy_strerror(res) << std::endl;
+		}
+		else {
+			std::cout << "Response:\n" << response << std::endl;
+		}
+
+		curl_easy_cleanup(curl);
+	}
+
+	curl_global_cleanup();
+	return 0;
+}
