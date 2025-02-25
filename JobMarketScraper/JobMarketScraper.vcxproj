@@ -139,7 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="JobMarketScraper.cpp" />
+    <ClCompile Include="src\headers.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\network.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\headers.h" />
+    <ClInclude Include="src\network.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
