@@ -4,6 +4,6 @@
 
 namespace networking {
 	size_t write_callback(void* contents, size_t size, size_t nmemb, std::string* output);
-	void make_requets(std::string reqUrl);
+	void make_request(std::string reqUrl);
     
 }
